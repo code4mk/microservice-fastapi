@@ -1,17 +1,12 @@
-from fastapi import APIRouter, Request, Body, Depends
-from app.models.order import Order
+from fastapi import APIRouter, Request
 from app.services.order_service import OrderService
 from app.utils.kafka import consume_order_from_kafka
 from app.schema_dto.order_schema import OrderCreateSchema
-from pydantic import ValidationError
 from app.utils.base import the_query, validate_data
 
+# Instance
 router = APIRouter()
 order_service = OrderService()
-
-
-from typing import Type, Callable
-from fastapi import Request, HTTPException
 
 @router.post("/orders")
 async def create_order(request: Request, order_data: OrderCreateSchema):
