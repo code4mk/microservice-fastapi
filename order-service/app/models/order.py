@@ -7,4 +7,6 @@ class Order(Base):
     id = Column(Integer, primary_key=True, index=True)
     product_id = Column(String, index=True)
     quantity = Column(Integer, index=True)
+    
+    # id, customer_id ,items, total_price, shipping_address, status
 
