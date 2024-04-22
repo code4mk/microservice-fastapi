@@ -10,7 +10,7 @@ def create_application():
     application = FastAPI()
     
     # Include routers
-    application.include_router(order.router, prefix="/api/v1")
+    application.include_router(order.router, prefix="/api/v1/order-service")
 
     # Allow all origins (not recommended for production)
     # Replace the "*" with the actual frontend URL in production
