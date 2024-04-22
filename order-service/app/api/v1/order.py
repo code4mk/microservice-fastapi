@@ -10,6 +10,7 @@ order_service = OrderService()
 async def create_order(request: Request):
     data = await request.json() if request.headers.get("Content-Type") == "application/json" else await request.form()
     order = Order(**data)
+    print(str(request))
     return order_service.place_order(order)
 
 def start_order_consumer():
