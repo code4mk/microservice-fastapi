@@ -1,26 +1,29 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Body, Depends
 from app.models.order import Order
 from app.services.order_service import OrderService
 from app.utils.kafka import consume_order_from_kafka
-from app.dto.order_dto import OrderCreateDto
+from app.schema_dto.order_schema import OrderCreateSchema
 from pydantic import ValidationError
 from app.utils.base import the_query, validate_data
 
 router = APIRouter()
 order_service = OrderService()
 
+
+from typing import Type, Callable
+from fastapi import Request, HTTPException
+
 @router.post("/orders")
-async def create_order(request: Request):
+async def create_order(request: Request, order_data: OrderCreateSchema):
+ 
+    #data = OrderCreateSchema(**order_data.model_dump())
+    
     # Retrieve data from the request
-    data = await the_query(request)
+    request_data = await the_query(request)
+    data = OrderCreateSchema(**request_data)
     
-    # Validate the data
-    dto_validate = await validate_data(data, OrderCreateDto)
-    if dto_validate['status'] == 'invalid':
-        return {'error': 'Validation failed', 'details': dto_validate['errors']}
-    
-    order = Order(**data)
-    return order_service.place_order(order)
+    return order_service.place_order(data)
+
 
 def start_order_consumer():
     while True:
