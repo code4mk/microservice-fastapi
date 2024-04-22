@@ -4,13 +4,14 @@ This project structure looks well-organized and follows common conventions for a
 order-service/
 ├── app
 │   ├── __init__.py
+│   ├── api
+│   │   └── v1
+│   │       └── order.py
 │   ├── main.py
 │   ├── models
 │   │   └── order.py
 │   ├── repositories
 │   │   └── order_repository.py
-│   ├── routers
-│   │   └── order.py
 │   ├── services
 │   │   └── order_service.py
 │   └── utils
@@ -21,8 +22,6 @@ order-service/
 ├── Pipfile
 ├── Pipfile.lock
 └── README.md
-
-
 ```
 
 - **Dockerfile**: Used to build the Docker image for containerizing the application.
@@ -32,7 +31,7 @@ order-service/
   - **main.py**: Entry point for the FastAPI application.
   - **models**: Directory for defining data models, in this case, an order model.
   - **repositories**: Contains code for interacting with the database, in this case, an order repository.
-  - **routers**: Contains API routers, which define endpoints and route requests to the appropriate handlers.
+  - **api**: Contains API, which define endpoints and route requests to the appropriate handlers.
   - **services**: Contains business logic services, in this case, an order service.
   - **utils**: Directory for utility functions, such as database and Kafka utilities.
 - **main.py**: Another entry point for the application, possibly used for development or testing purposes.
