@@ -18,6 +18,11 @@ async def create_order(request: Request, order_data: OrderCreateSchema):
  
     #data = OrderCreateSchema(**order_data.model_dump())
     
+    ### manually data validate
+    # dto_validate = await validate_data(data, OrderCreateSchema)
+    # if dto_validate['status'] == 'invalid':
+    #     return {'error': 'Validation failed', 'details': dto_validate['errors']}
+    
     # Retrieve data from the request
     request_data = await the_query(request)
     data = OrderCreateSchema(**request_data)
