@@ -1,4 +1,3 @@
-# app/utils/kafka.py
 import os
 from confluent_kafka import Producer, Consumer, KafkaError
 from app.models.order import Order
@@ -31,8 +30,26 @@ consumer_config = {
 producer = Producer(producer_config)
 
 def send_order_to_kafka(order: Order):
-    producer.produce('order_topic', value=order.model_dump_json().encode('utf-8'))
+    import json
+    
+    # Define a method in the Order class to convert it to a dictionary
+    def order_to_dict(order):
+        return {
+            "id": order.id,
+            "product_id": order.product_id,
+            "quantity": order.quantity
+        }
+
+    # Convert the Order object to a dictionary
+    order_dict = order_to_dict(order)
+
+    # Serialize the dictionary to JSON
+    order_json = json.dumps(order_dict)
+    
+    # Send the JSON data to Kafka
+    producer.produce('order_topic', value=order_json.encode('utf-8'))
     producer.flush()
+
 
 consumer = Consumer(consumer_config)
 
@@ -51,10 +68,11 @@ def consume_order_from_kafka():
                 else:
                     print("Consumer error: {}".format(msg.error()))
                     break
+            
+            # Decode and print the message value
+            print("Received message: {}".format(msg.value().decode('utf-8')))
 
-            # Process the order
-            order = Order.parse_raw(msg.value().decode('utf-8'))
-            print("Received order:", order)
     finally:
         # Close the consumer when done
         consumer.close()
+

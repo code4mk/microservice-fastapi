@@ -6,6 +6,9 @@ name = "pypi"
 [packages]
 fastapi = {extras = ["all"], version = "*"}
 confluent-kafka = "*"
+sqlalchemy = "*"
+asyncpg = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 

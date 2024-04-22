@@ -21,5 +21,7 @@ def create_application():
         allow_methods=["GET", "POST", "PUT", "DELETE"],
         allow_headers=["*"],
     )
+    
+    return application
 
 app = create_application()

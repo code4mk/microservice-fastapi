@@ -1,9 +1,10 @@
-# app/models/order.py
+from sqlalchemy import Column, Integer, String
+from app.utils.database import Base
 
-from pydantic import BaseModel
+class Order(Base):
+    __tablename__ = "orders"
 
-class Order(BaseModel):
-    id: int
-    product_id: int
-    quantity: int
-    # Add other order fields as needed
+    id = Column(Integer, primary_key=True, index=True)
+    product_id = Column(String, index=True)
+    quantity = Column(Integer, index=True)
+
