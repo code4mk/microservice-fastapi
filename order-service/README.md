@@ -1,5 +1,30 @@
 This project structure looks well-organized and follows common conventions for a FastAPI microservice. Here's a breakdown of its components:
 
+```bash
+order-service/
+├── app
+│   ├── __init__.py
+│   ├── main.py
+│   ├── models
+│   │   └── order.py
+│   ├── repositories
+│   │   └── order_repository.py
+│   ├── routers
+│   │   └── order.py
+│   ├── services
+│   │   └── order_service.py
+│   └── utils
+│       ├── database.py
+│       └── kafka.py
+├── tests
+├── Dockerfile
+├── Pipfile
+├── Pipfile.lock
+└── README.md
+
+
+```
+
 - **Dockerfile**: Used to build the Docker image for containerizing the application.
 - **Pipfile** and **Pipfile.lock**: Used by pipenv to manage Python dependencies.
 - **app**: Directory containing the main application code.
