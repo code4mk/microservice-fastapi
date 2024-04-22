@@ -1,13 +1,15 @@
 from fastapi import APIRouter, Request, status
 from fastapi.responses import JSONResponse
 from app.services.order_service import OrderService
-from app.utils.kafka import consume_order_from_kafka
 from app.schema_dto.order_schema import OrderCreateSchema
 from app.utils.base import the_query, validate_data
+from app.utils.kafka import KafkaService
+from app.models.order import Order
 
 # Instance
 router = APIRouter()
 order_service = OrderService()
+kafka_service = KafkaService()
 
 @router.post("/orders")
 async def create_order(request: Request, order_data: OrderCreateSchema):
@@ -23,13 +25,13 @@ async def create_order(request: Request, order_data: OrderCreateSchema):
     request_data = await the_query(request)
     data = OrderCreateSchema(**request_data)
     
-    output =  order_service.place_order(data)
+    output = order_service.place_order(data)
     return JSONResponse(content=output, status_code=status.HTTP_200_OK)
 
 
 def start_order_consumer():
     while True:
-        consume_order_from_kafka()
+        kafka_service.consume_from_kafka(topic='order_topic')
       
 @router.on_event("startup")
 async def startup_event():

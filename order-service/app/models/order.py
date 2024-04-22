@@ -8,5 +8,8 @@ class Order(Base):
     product_id = Column(String, index=True)
     quantity = Column(Integer, index=True)
     
+    def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+    
     # id, customer_id ,items, total_price, shipping_address, status
 

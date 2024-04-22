@@ -1,6 +1,6 @@
 import os
+import json
 from confluent_kafka import Producer, Consumer, KafkaError
-from app.models.order import Order
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -22,57 +22,42 @@ consumer_config = {
     'sasl.username': os.getenv('KAFKA_USERNAME'),
     'sasl.password': os.getenv('KAFKA_PASSWORD'),
     'default.topic.config': {'api.version.request': True},
-    'session.timeout.ms': 45000,
     'group.id': 'my_consumer_group',
     'auto.offset.reset': 'earliest'
 }
 
-producer = Producer(producer_config)
+class KafkaService:
+    def __init__(self):
+        self.producer = Producer(producer_config)
+        self.consumer = Consumer(consumer_config)
 
-def send_order_to_kafka(order: Order):
-    import json
-    
-    # Define a method in the Order class to convert it to a dictionary
-    def order_to_dict(order):
-        return {
-            "id": order.id,
-            "product_id": order.product_id,
-            "quantity": order.quantity
+    def produce_to_kafka(self, topic, data):
+        the_data = {
+            'topic_name': topic,
+            'data': data
         }
+        data_json = json.dumps(the_data)
+        self.producer.produce(topic, value=data_json.encode('utf-8'))
+        self.producer.flush()
 
-    # Convert the Order object to a dictionary
-    order_dict = order_to_dict(order)
+    def consume_from_kafka(self, topic):
+        self.consumer.subscribe([topic])
 
-    # Serialize the dictionary to JSON
-    order_json = json.dumps(order_dict)
-    
-    # Send the JSON data to Kafka
-    producer.produce('order_topic', value=order_json.encode('utf-8'))
-    producer.flush()
+        try:
+            while True:
+                msg = self.consumer.poll(1.0)
 
-
-consumer = Consumer(consumer_config)
-
-def consume_order_from_kafka():
-    consumer.subscribe(['order_topic'])
-
-    try:
-        while True:
-            msg = consumer.poll(1.0)
-
-            if msg is None:
-                continue
-            if msg.error():
-                if msg.error().code() == KafkaError._PARTITION_EOF:
+                if msg is None:
                     continue
-                else:
-                    print("Consumer error: {}".format(msg.error()))
-                    break
-            
-            # Decode and print the message value
-            print("Received message: {}".format(msg.value().decode('utf-8')))
+                if msg.error():
+                    if msg.error().code() == KafkaError._PARTITION_EOF:
+                        continue
+                    else:
+                        print("Consumer error: {}".format(msg.error()))
+                        break
 
-    finally:
-        # Close the consumer when done
-        consumer.close()
+                data = json.loads(msg.value().decode('utf-8'))
+                print("Received message: {}".format(data))
 
+        finally:
+            self.consumer.close()
