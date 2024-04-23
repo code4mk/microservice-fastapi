@@ -11,8 +11,7 @@ producer_config = {
     'sasl.mechanisms': 'PLAIN',
     'sasl.username': os.getenv('KAFKA_USERNAME'),
     'sasl.password': os.getenv('KAFKA_PASSWORD'),
-    'default.topic.config': {'api.version.request': True},
-    'session.timeout.ms': 45000
+    'default.topic.config': {'api.version.request': True}
 }
 
 consumer_config = {
