@@ -1,26 +1,32 @@
 This project structure looks well-organized and follows common conventions for a FastAPI microservice. Here's a breakdown of its components:
 
 ```bash
-order-service/
+order-service
 ├── app
-│   ├── __init__.py
 │   ├── api
 │   │   └── v1
 │   │       └── order.py
-│   ├── main.py
 │   ├── models
 │   │   └── order.py
 │   ├── repositories
 │   │   └── order_repository.py
+│   ├── schema_dto
+│   │   └── order_schema.py
 │   ├── services
 │   │   └── order_service.py
-│   └── utils
-│       ├── database.py
-│       └── kafka.py
-├── tests
+│   ├── utils
+│   │   ├── base.py
+│   │   ├── database.py
+│   │   └── kafka.py
+│   ├── __init__.py
+│   └── main.py
+├── test
+│   └── test.py
+├── .env.example
+├── .gitignore
 ├── Dockerfile
-├── Pipfile
-├── Pipfile.lock
+├── pipfile
+├── pipfile.lock
 └── README.md
 ```
 
