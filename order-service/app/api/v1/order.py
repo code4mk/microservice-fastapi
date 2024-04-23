@@ -7,7 +7,7 @@ from app.utils.kafka import KafkaService
 from app.models.order import Order
 
 # Instance
-router = APIRouter()
+router = APIRouter(prefix="/order-service")
 order_service = OrderService()
 kafka_service = KafkaService()
 
