@@ -4,7 +4,6 @@ from app.services.order_service import OrderService
 from app.schema_dto.order_schema import OrderCreateSchema
 from app.utils.base import the_query, validate_data
 from app.utils.kafka import KafkaService
-from app.models.order import Order
 
 # Instance
 router = APIRouter(prefix="/order-service")
