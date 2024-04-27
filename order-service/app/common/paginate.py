@@ -1,7 +1,7 @@
 from urllib.parse import urlparse
 from fastapi import Request
 
-def paginate(request: Request, query, ResponseSchema, the_page: int = 1, the_per_page: int = 10, wrap='data'):
+def paginate(request: Request, query, serilizer, the_page: int = 1, the_per_page: int = 10, wrap='data'):
     """Paginate the query."""
     
     page = int(request.query_params.get('page', the_page))
@@ -12,7 +12,7 @@ def paginate(request: Request, query, ResponseSchema, the_page: int = 1, the_per
     offset = (page - 1) * per_page
     paginated_query = query.offset(offset).limit(per_page).all()
 
-    data = [ResponseSchema.from_orm(item) for item in paginated_query]
+    data = [serilizer.from_orm(item) for item in paginated_query]
 
     base_url = str(request.base_url)
     
