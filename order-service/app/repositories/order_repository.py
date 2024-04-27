@@ -1,5 +1,6 @@
 from app.models.order import Order
 from sqlalchemy.orm import Session 
+from fastapi import Request
 
 class OrderRepository:
     def __init__(self, db: Session):
@@ -11,4 +12,8 @@ class OrderRepository:
         self.db.commit()
         self.db.refresh(order)
         return order
-
+    
+    def get_orders(self, request: Request):
+        orders = self.db.query(Order).all()
+        return orders
+        

@@ -4,11 +4,14 @@ from app.services.order_service import OrderService
 from app.schema_dto.order_schema import OrderCreateSchema
 from app.utils.base import the_query, validate_data
 from app.utils.kafka import KafkaService
+from app.schema_dto.order_schema import OrderCreateSchema
+from fastapi.encoders import jsonable_encoder
 
-# Instance
 router = APIRouter(prefix="/order-service")
+
 order_service = OrderService()
 kafka_service = KafkaService()
+
 
 @router.post("/orders")
 async def create_order(request: Request, order_data: OrderCreateSchema):
@@ -27,6 +30,10 @@ async def create_order(request: Request, order_data: OrderCreateSchema):
     output = order_service.place_order(data)
     return JSONResponse(content=output, status_code=status.HTTP_200_OK)
 
+@router.get("/get-orders")
+async def get_orders(request: Request):
+    data = order_service.s_get_order(request)
+    return JSONResponse(content=jsonable_encoder(data), status_code=status.HTTP_200_OK)
 
 def start_order_consumer():
     while True:

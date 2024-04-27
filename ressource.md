@@ -1,0 +1,1 @@
+* https://github.com/fastapi-practices/fastapi_best_architecture/tree/master/backend/app

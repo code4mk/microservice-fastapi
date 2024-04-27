@@ -18,4 +18,8 @@ class OrderService:
             return data
         finally:
             self.db.close()
+            
+    def s_get_order(self, request):
+        data = self.order_repository.get_orders(request)
+        return data
 

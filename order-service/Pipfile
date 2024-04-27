@@ -9,6 +9,7 @@ confluent-kafka = "*"
 sqlalchemy = "*"
 asyncpg = "*"
 psycopg2-binary = "*"
+fastapi-pagination = "*"
 
 [dev-packages]
 
