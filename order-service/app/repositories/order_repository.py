@@ -1,6 +1,8 @@
 from app.models.order import Order
 from sqlalchemy.orm import Session 
 from fastapi import Request
+from app.common.paginate import paginate
+from app.schema_dto.order_schema import OrderSerialized
 
 class OrderRepository:
     def __init__(self, db: Session):
@@ -14,6 +16,6 @@ class OrderRepository:
         return order
     
     def get_orders(self, request: Request):
-        orders = self.db.query(Order).all()
-        return orders
+        orders = self.db.query(Order)
+        return paginate(request, orders, OrderSerialized, wrap='orders')
         
