@@ -1,6 +1,7 @@
 from fastapi import Request
 from typing import Any, Dict, Optional, Union
 from pydantic import BaseModel, ValidationError
+from sqlalchemy import desc
 
 async def the_query(request: Request, name = None) -> Dict[str, str]:
     data = {}
@@ -30,3 +31,14 @@ async def validate_data(data: Dict[str, Any], model: BaseModel) -> Dict[str, Uni
         output['errors'] = e.errors()
         
     return output
+
+
+def parse_sort_params(sort_params: str):
+        sort_fields = sort_params.split(",")
+        ordering = []
+        for field in sort_fields:
+            if field.startswith("-"):
+                ordering.append(desc(field[1:]))
+            else:
+                ordering.append(field)
+        return ordering
