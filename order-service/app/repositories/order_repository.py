@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from fastapi import Request
 from app.common.paginate import paginate
 from app.serializers.order_serializer import order_lists_serializer
-from app.utils.base import parse_sort_params
+from app.utils.base import the_sorting
 
 class OrderRepository:
     def __init__(self, db: Session):
@@ -18,12 +18,7 @@ class OrderRepository:
     
     def get_orders(self, request: Request):
         orders = self.db.query(Order)
-        
-        sort_params = request.query_params.get("sort")
-        if sort_params:
-            ordering = parse_sort_params(sort_params)
-            orders = orders.order_by(*ordering)
-            
+        orders = the_sorting(request, orders)
         return paginate(request, orders, serilizer=order_lists_serializer, wrap='orders')
     
     def get_order_by_id(self, request: Request, id: int):
