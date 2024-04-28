@@ -30,9 +30,14 @@ async def create_order(request: Request, order_data: OrderCreateSchema):
     output = order_service.place_order(data)
     return JSONResponse(content=output, status_code=status.HTTP_200_OK)
 
-@router.get("/get-orders")
+@router.get("/orders/")
 async def get_orders(request: Request):
     data = order_service.s_get_order(request)
+    return JSONResponse(content=jsonable_encoder(data), status_code=status.HTTP_200_OK)
+
+@router.get("/orders/{id}")
+async def get_orders(request: Request, id: int):
+    data = order_service.s_get_order_by_id(request, id)
     return JSONResponse(content=jsonable_encoder(data), status_code=status.HTTP_200_OK)
 
 def start_order_consumer():

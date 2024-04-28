@@ -18,4 +18,7 @@ class OrderRepository:
     def get_orders(self, request: Request):
         orders = self.db.query(Order)
         return paginate(request, orders, serilizer=order_lists_serializer, wrap='orders')
-        
+    
+    def get_order_by_id(self, request: Request, id: int):
+        order = self.db.query(Order).filter_by(id=id).first()
+        return order

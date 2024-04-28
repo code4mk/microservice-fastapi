@@ -22,4 +22,7 @@ class OrderService:
     def s_get_order(self, request):
         data = self.order_repository.get_orders(request)
         return data
-
+    
+    def s_get_order_by_id(self, request, id):
+        data = self.order_repository.get_order_by_id(request, id)
+        return data
