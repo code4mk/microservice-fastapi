@@ -1,6 +1,7 @@
 from fastapi import APIRouter, status, Request
 from fastapi.responses import JSONResponse
 from app.common.template import render_template, render_mail_template
+from app.utils.mailer.mail import send_mail
 
 # Create a FastAPI app
 router = APIRouter()
@@ -23,6 +24,12 @@ async def root_index(request: Request):
         rendered_email = render_mail_template("welcome_email.html", context)
         print(rendered_email)
         
+        try:
+            print(0)
+        except print(0):
+            pass
+        
+        
         data = {
             'message': 'project is running'
         }
@@ -36,8 +43,15 @@ async def mail(request: Request):
         }
 
         rendered_email = render_mail_template("welcome_email.html", context)
-
+        
+        try:
+            a = await send_mail('this is fastapi micro service',['mostafa@kintaro.io'] ,'welcome_email.html', context) 
+            print(a)
+        except Exception as e:
+            print(str(e))
+            
+        
         data = {
-            'data': rendered_email
+            'data1': rendered_email
         }
         return JSONResponse(content=data, status_code=status.HTTP_200_OK)

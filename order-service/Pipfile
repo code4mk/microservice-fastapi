@@ -11,6 +11,7 @@ asyncpg = "*"
 psycopg2-binary = "*"
 premailer = "*"
 bs4 = "*"
+fastapi-mail = "*"
 
 [dev-packages]
 
