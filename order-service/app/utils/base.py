@@ -47,3 +47,12 @@ def the_sorting(request, query):
             query = query.order_by(*ordering)
             
         return query
+    
+def app_path(path_name = None):
+    from pathlib import Path
+    the_path = str(Path(__file__).parent.parent)
+    
+    if path_name:
+        the_path = f'{the_path}/{path_name}'
+        
+    return the_path
