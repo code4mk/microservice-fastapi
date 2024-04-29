@@ -1,8 +1,8 @@
 from fastapi import Request
 from fastapi.templating import Jinja2Templates
 from app.utils.base import app_path
+from app.utils.mailer.mail_templating import EmailTemplates
 
-templates = Jinja2Templates(directory=app_path('templates'))
 
 def render_template(template_name: str, request: Request, context: dict = {}):
     """
@@ -16,4 +16,9 @@ def render_template(template_name: str, request: Request, context: dict = {}):
     Returns:
         TemplateResponse: The rendered template response.
     """
+    templates = Jinja2Templates(directory=app_path('templates'))
     return templates.TemplateResponse(template_name, {"request": request, **context})
+
+def render_mail_template(template_name: str, context: dict = {}):
+  templates = EmailTemplates(directory=app_path('templates/mails'))
+  return templates.render_template(template_name, context)

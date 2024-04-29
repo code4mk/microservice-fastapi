@@ -9,6 +9,8 @@ confluent-kafka = "*"
 sqlalchemy = "*"
 asyncpg = "*"
 psycopg2-binary = "*"
+premailer = "*"
+bs4 = "*"
 
 [dev-packages]
 
